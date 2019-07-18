@@ -65,7 +65,7 @@ const (
 	AVL_RIGHT_HEAVY = -1
 )
 
-type BsTree BiTree
+type BisTree BiTree
 
 type AvlNode struct {
 	data interface{}
@@ -74,3 +74,125 @@ type AvlNode struct {
 	//该结点的平衡因子
 	factor int
 }
+
+//BiTreeNode 的 data为AvlNode结点
+
+//node为指向A的指针 注意是**
+func Rorate_left(node **BiTreeNode) {
+	var left, grandchild *BiTreeNode
+
+	left = (*node).left
+
+	//LL
+	if (left.data.(*AvlNode).factor == AVL_LEFT_HEAVY) {
+		(*node).left = left.right
+		left.right = *node
+
+		left.data.(*AvlNode).factor = AVL_BALANCE
+		(*node).data.(*AvlNode).factor = AVL_BALANCE
+		*node = left
+	} else { //LR
+		grandchild = left.right
+		left.right = grandchild.left
+		grandchild.left = left
+		(*node).left = grandchild.right
+		grandchild.right = (*node)
+
+		switch grandchild.data.(*AvlNode).factor {
+		case AVL_LEFT_HEAVY:
+			left.data.(*AvlNode).factor = AVL_BALANCE
+			(*node).data.(*AvlNode).factor = AVL_RIGHT_HEAVY
+		case AVL_BALANCE:
+			left.data.(*AvlNode).factor = AVL_BALANCE
+			(*node).data.(*AvlNode).factor = AVL_BALANCE
+		case AVL_RIGHT_HEAVY:
+			left.data.(*AvlNode).factor = AVL_LEFT_HEAVY
+			(*node).data.(*AvlNode).factor = AVL_BALANCE
+		}
+
+		grandchild.data.(*AvlNode).factor = AVL_BALANCE
+		*node = grandchild
+	}
+}
+
+//互为镜像: node为指向A的指针 注意是**
+func Rorate_right(node **BiTreeNode) {
+	var right, grandchild *BiTreeNode
+
+	right = (*node).right
+
+	//RR
+	if (right.data.(*AvlNode).factor == AVL_RIGHT_HEAVY) {
+		(*node).right = right.left
+		right.right = *node
+
+		right.data.(*AvlNode).factor = AVL_BALANCE
+		(*node).data.(*AvlNode).factor = AVL_BALANCE
+		*node = right
+	} else { //RL
+		grandchild = right.right
+		right.left = grandchild.right
+		grandchild.right = right
+		(*node).right = grandchild.left
+		grandchild.left = (*node)
+
+		switch grandchild.data.(*AvlNode).factor {
+		case AVL_LEFT_HEAVY:
+			right.data.(*AvlNode).factor = AVL_RIGHT_HEAVY
+			(*node).data.(*AvlNode).factor = AVL_BALANCE
+		case AVL_BALANCE:
+			right.data.(*AvlNode).factor = AVL_BALANCE
+			(*node).data.(*AvlNode).factor = AVL_BALANCE
+		case AVL_RIGHT_HEAVY:
+			right.data.(*AvlNode).factor = AVL_BALANCE
+			(*node).data.(*AvlNode).factor = AVL_LEFT_HEAVY
+		}
+
+		grandchild.data.(*AvlNode).factor = AVL_BALANCE
+		*node = grandchild
+	}
+}
+
+//销毁某个结点下方的左子树
+func Destory_left(bs *BisTree, node *BiTreeNode) {
+	var pos *BiTreeNode
+
+	if bs.size == 0 {
+		return
+	}
+
+	if node == nil {
+		pos = bs.root
+	} else {
+		pos = node.left
+	}
+
+	if pos != nil {
+		Destory_left(bs, pos)
+		Destory_right(bs, pos)
+		bs.size--
+	}
+}
+
+//销毁某个结点下方的右子树
+func Destory_right(bs *BisTree, node *BiTreeNode) {
+	var pos **BiTreeNode
+
+	if bs.size == 0 {
+		return
+	}
+
+	if node == nil {
+		pos = &bs.root
+	} else {
+		pos = &node.right
+	}
+
+	if *pos != nil {
+		Destory_left(bs, *pos)
+		Destory_right(bs, *pos)
+		*pos = nil
+		bs.size--
+	}
+}
+

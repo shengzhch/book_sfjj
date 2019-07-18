@@ -131,22 +131,70 @@ func (bs *BiTree) Root() *BiTreeNode {
 	return bs.root
 }
 
+func (node *BiTreeNode) Preorder(l *List) {
+
+	if !node.Is_eob() {
+		l.Ins_next(nil, node.data)
+
+		if !node.left.Is_eob() {
+			node.left.Preorder(l)
+		}
+
+		if !node.right.Is_eob() {
+			node.right.Preorder(l)
+		}
+	}
+}
+
+func (node *BiTreeNode) Inorder(l *List) {
+	if !node.Is_eob() {
+
+		if !node.left.Is_eob() {
+			node.left.Preorder(l)
+		}
+
+		l.Ins_next(nil, node.data)
+
+		if !node.right.Is_eob() {
+			node.right.Preorder(l)
+		}
+	}
+}
+func (node *BiTreeNode) Postorder(l *List) {
+	if !node.Is_eob() {
+		if !node.left.Is_eob() {
+			node.left.Preorder(l)
+		}
+
+		if !node.right.Is_eob() {
+			node.right.Preorder(l)
+		}
+
+		l.Ins_next(nil, node.data)
+	}
+}
+
 //判断node是不是二叉树的叶子结点
 func (node *BiTreeNode) Is_leaf() bool {
 	return node.left == nil && node.right == nil
 }
 
-//
-func (bs *BiTreeNode) Right() *BiTreeNode {
-	return bs.right
+//判断node的终止 end of bitree
+func (node *BiTreeNode) Is_eob() bool {
+	return node == nil
 }
 
 //
-func (bs *BiTreeNode) Left() *BiTreeNode {
-	return bs.left
+func (node *BiTreeNode) Right() *BiTreeNode {
+	return node.right
 }
 
 //
-func (bs *BiTreeNode) Data() interface{} {
-	return bs.data
+func (node *BiTreeNode) Left() *BiTreeNode {
+	return node.left
+}
+
+//
+func (node *BiTreeNode) Data() interface{} {
+	return node.data
 }
