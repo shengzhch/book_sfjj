@@ -11,16 +11,26 @@ type BiTreeNode struct {
 }
 
 type BiTree struct {
-	size int
-	root *BiTreeNode
+	size    int
+	compare func(key1, key2 interface{}) int
+	root    *BiTreeNode
 }
 
 var (
-	Wrong error = errors.New("Wrong")
+	Wrong  = errors.New("Wrong")
 )
 
+func (bs *BiTree) Init(args ...interface{}) {
+	bs.size = 0
+	if len(args) == 1 {
+		bs.compare = args[0].(func(key1, key2 interface{}) int)
+	}
+	return
+}
+
 //将新节点插入到二叉树中且node节点的左子结点，新节点的数据为data。若node为nil且二叉树为空树，则新结点作为根结点
-func (bs *BiTree) Ins_left(node *BiTreeNode, data interface{}) (e error) {
+func (bs *BiTree) Ins_left(node *BiTreeNode,
+	data interface{}) (e error) {
 
 	var pos = &BiTreeNode{data: data}
 	if node == nil {

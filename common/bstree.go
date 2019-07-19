@@ -9,8 +9,6 @@ package common
 
 
 
-
-//todo: notice
 AVL 树 ：特殊类型的二叉树，每个结点保存一份额外的信息：结点的平衡因子.结点左子树的高度减去右子树的高度。
 插入结点时avl树通过自我调整，使平衡因子始终保持在 +1，-1，0。该过程称为旋转
 
@@ -53,10 +51,6 @@ A的右子结点指向grandchild的左子结点，（A变为0或-1）（此时A�
 grandchild的左子结点指向A，（grandchild为0）
 将原指向A的指针指向grandchild。
 
-
-
-
-
 */
 
 const (
@@ -69,13 +63,13 @@ type BisTree BiTree
 
 type AvlNode struct {
 	data interface{}
-	//用来标识结点是否已经移除的一个成员
-	hidden int
+	//用来标识结点是否已经处于删除状态 false 表示存在 true 表示已删除
+	hidden bool
 	//该结点的平衡因子
 	factor int
 }
 
-//BiTreeNode 的 data为AvlNode结点
+//BiTreeNode的data为AvlNode结点
 
 //node为指向A的指针 注意是**
 func Rorate_left(node **BiTreeNode) {
@@ -196,3 +190,129 @@ func Destory_right(bs *BisTree, node *BiTreeNode) {
 	}
 }
 
+//AVL树的插入 node为A结点
+func Insert(tree *BiTree, node **BiTreeNode, data interface{}, balanced *bool) {
+	var avlNode *AvlNode
+
+	if (*node).Is_eob() {
+		avlNode = new(AvlNode)
+		avlNode.data = data
+		avlNode.factor = AVL_BALANCE
+		avlNode.hidden = false
+		tree.Ins_left(*node, avlNode)
+		return
+	} else {
+
+		var cmpval int
+
+		//值大于当前结点值
+		cmpval = tree.compare(data, (*node).data.(*AvlNode).data)
+
+		//放入到左子树中
+		if cmpval < 0 {
+			if (*node).left.Is_eob() {
+				avlNode = new(AvlNode)
+				avlNode.data = data
+				avlNode.factor = AVL_BALANCE
+				avlNode.hidden = false
+				tree.Ins_left(*node, avlNode)
+				*balanced = false
+			} else {
+				//以左结点为根做递归插入
+				Insert(tree, &(*node).left, data, balanced)
+			}
+
+			if !(*balanced) {
+				switch (*node).data.(*AvlNode).factor {
+				case AVL_LEFT_HEAVY:
+					Rorate_left(node)
+					*balanced = true
+				case AVL_BALANCE:
+					(*node).data.(*AvlNode).factor = AVL_LEFT_HEAVY
+				case AVL_RIGHT_HEAVY:
+					(*node).data.(*AvlNode).factor = AVL_BALANCE
+					*balanced = true
+				}
+
+			}
+
+		} else if cmpval > 0 { //插入到右子树中
+			if (*node).right.Is_eob() {
+				avlNode = new(AvlNode)
+				avlNode.data = data
+				avlNode.factor = AVL_BALANCE
+				avlNode.hidden = false
+				tree.Ins_right(*node, avlNode)
+				*balanced = false
+			} else {
+				//以左结点为根做递归插入
+				Insert(tree, &(*node).right, data, balanced)
+			}
+
+			if !(*balanced) {
+				switch (*node).data.(*AvlNode).factor {
+				case AVL_LEFT_HEAVY:
+					(*node).data.(*AvlNode).factor = AVL_BALANCE
+					*balanced = true
+				case AVL_BALANCE:
+					(*node).data.(*AvlNode).factor = AVL_RIGHT_HEAVY
+				case AVL_RIGHT_HEAVY:
+					Rorate_right(node)
+					*balanced = true
+				}
+			}
+		} else {
+			//数据存在
+			if !(*node).data.(*AvlNode).hidden {
+				return
+			} else { //数据状态修改为为删除
+				(*node).data.(*AvlNode).hidden = false
+				*balanced = true
+			}
+		}
+	}
+}
+
+//从node开始查找 删除结点为data的结点
+func Hide(tree *BisTree, node *BiTreeNode, data interface{}) {
+	var cmpval int
+	if node.Is_eob() {
+		return
+	}
+
+	cmpval = tree.compare(data, (*node).data.(*AvlNode).data)
+
+	if cmpval < 0 {
+		Hide(tree, node.left, data)
+	} else if cmpval > 0 {
+		Hide(tree, node.right, data)
+	} else {
+		(*node).data.(*AvlNode).hidden = true
+	}
+
+	return
+}
+
+func Lookup(tree *BisTree, node *BiTreeNode, data interface{}) int {
+	var cmpval, retval int
+	if node.Is_eob() {
+		return -1
+	}
+
+	cmpval = tree.compare(data, (*node).data.(*AvlNode).data)
+
+	if cmpval < 0 {
+		retval = Lookup(tree, node.left, data)
+	} else if cmpval > 0 {
+		retval = Lookup(tree, node.right, data)
+	} else {
+		if !(*node).data.(*AvlNode).hidden {
+			data = (*node).data.(*AvlNode).data
+			retval = 0
+		} else {
+			return -1
+		}
+	}
+
+	return retval
+}
