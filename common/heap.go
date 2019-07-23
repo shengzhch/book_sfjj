@@ -14,7 +14,7 @@ type Heap struct {
 	tree []interface{}
 }
 
-func (h *Heap) Init(args ...interface{}) {
+func (h Heap) Init(args ...interface{}) {
 	h.size = 0
 	h.tree = *new([]interface{})
 	if len(args) == 1 {
@@ -38,7 +38,7 @@ var (
 )
 
 //最大堆处理
-func (h *Heap) Insert(data interface{}) {
+func (h Heap) Insert(data interface{}) {
 	var ipos, ppos int
 
 	h.tree = append(h.tree, data)
@@ -55,7 +55,7 @@ func (h *Heap) Insert(data interface{}) {
 }
 
 //提取 第一个元素,提取后调整数组保证堆的正确顺序
-func (h *Heap) Extract() interface{} {
+func (h Heap) Extract() interface{} {
 	if h.size == 0 {
 		return nil
 	}
