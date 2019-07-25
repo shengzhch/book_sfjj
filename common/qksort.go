@@ -28,7 +28,7 @@ func rand() int {
 	return rand2.Intn(2147483647)
 }
 
-//i,k 初试值设置为 0 size-1 分区
+//i,k 初试值设置为 0 size-1 分区 原书给的算法有误，有可能陷入死循环,已调整
 func Partition(data []interface{}, i, k int, cf CF) int {
 	fmt.Println("DONE")
 	if i == k {
@@ -93,7 +93,7 @@ func Qksort1(data []interface{}, i, k int, cf CF) int {
 	return 0
 }
 
-//成功返回0，失败返回-1；分区方法调用 
+//成功返回0，失败返回-1；分区方法调用
 func Qksort2(data []interface{}, i, k int, cf CF) int {
 	if i >= k {
 		return 0
