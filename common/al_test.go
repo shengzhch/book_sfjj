@@ -45,3 +45,14 @@ func TestQksort2(t *testing.T) {
 
 	t.Log("rel ", a)
 }
+
+func TestMgsort(t *testing.T) {
+	a := []interface{}{
+		1, 5, 7, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45,
+	}
+	l := len(a) - 1
+
+	Mgsort(a, 0, l, cf)
+
+	t.Log("rel ", a)
+}

@@ -17,7 +17,7 @@ type BiTree struct {
 }
 
 var (
-	Wrong  = errors.New("Wrong")
+	Wrong = errors.New("Wrong")
 )
 
 func (bs *BiTree) Init(args ...interface{}) {
@@ -144,7 +144,7 @@ func (bs *BiTree) Root() *BiTreeNode {
 func (node *BiTreeNode) Preorder(l *List) {
 
 	if !node.Is_eob() {
-		l.Ins_next(nil, node.data)
+		l.Ins_next(l.tail, node.data)
 
 		if !node.left.Is_eob() {
 			node.left.Preorder(l)
@@ -160,27 +160,127 @@ func (node *BiTreeNode) Inorder(l *List) {
 	if !node.Is_eob() {
 
 		if !node.left.Is_eob() {
-			node.left.Preorder(l)
+			node.left.Inorder(l)
 		}
 
-		l.Ins_next(nil, node.data)
+		l.Ins_next(l.tail, node.data)
 
 		if !node.right.Is_eob() {
-			node.right.Preorder(l)
+			node.right.Inorder(l)
 		}
 	}
 }
+
 func (node *BiTreeNode) Postorder(l *List) {
 	if !node.Is_eob() {
 		if !node.left.Is_eob() {
-			node.left.Preorder(l)
+			node.left.Postorder(l)
 		}
 
 		if !node.right.Is_eob() {
-			node.right.Preorder(l)
+			node.right.Postorder(l)
 		}
 
-		l.Ins_next(nil, node.data)
+		l.Ins_next(l.tail, node.data)
+	}
+}
+
+//非递归遍历 遇到一个结点，插入到链表中，然后压栈，然后遍历左子树，左子树遍历完了，出栈，指向右结点，继续做
+func (node *BiTreeNode) PreorderNo(l *List) {
+	s := new(Stack)
+	s.Init()
+	var tmp = new(BiTreeNode)
+
+	tmp = node
+
+	for (tmp != nil || s.Size() > 0) {
+		for (tmp != nil) {
+			l.Ins_next(l.tail, tmp.data)
+			s.Push(tmp)
+			tmp = tmp.left
+		}
+		if s.Size() > 0 {
+			tmp = s.PopValue().(*BiTreeNode)
+			tmp = tmp.right
+		}
+	}
+}
+
+//非递归遍历 遇到一个结点，压栈，一直找到左结点为空，出栈，插入，指向右结点，继续做
+func (node *BiTreeNode) InorderrNo(l *List) {
+	s := new(Stack)
+	s.Init()
+	var tmp = new(BiTreeNode)
+
+	tmp = node
+
+	for (tmp != nil || s.Size() > 0) {
+		//一路向左压栈
+		for (tmp != nil) {
+			s.Push(tmp)
+			tmp = tmp.left
+		}
+
+		if s.Size() > 0 {
+			tmp = s.PopValue().(*BiTreeNode)
+			l.Ins_next(l.tail, tmp.data) //插入
+			tmp = tmp.right
+		}
+	}
+}
+
+//两个栈来做辅助存储 依次把根结点 右儿子 左儿子压栈，出栈的顺序就是后序遍历，处理过程于前序遍历相仿
+func (node *BiTreeNode) PostorderNo(l *List) {
+	s1 := new(Stack)
+	s1.Init()
+	s2 := new(Stack)
+	s2.Init()
+
+	var tmp = new(BiTreeNode)
+
+	tmp = node
+
+	for (tmp != nil || s1.Size() > 0) {
+		//一路向右压栈
+		for (tmp != nil) {
+			s1.Push(tmp)
+			s2.Push(tmp)
+			tmp = tmp.right
+		}
+
+		if s1.Size() > 0 {
+			tmp = s1.PopValue().(*BiTreeNode)
+			tmp = tmp.left
+		}
+	}
+
+	for (s2.Size() > 0) {
+		tmp = s1.PopValue().(*BiTreeNode)
+		l.Ins_next(l.tail, tmp.data) //插入
+	}
+}
+
+//层级遍历 根结点入队列，然后执行循环，出队列，左儿子入队，右儿子入队，然后继续做
+func (node *BiTreeNode) LevelorderNo(l *List) {
+	q := new(Queue)
+	var tmp = new(BiTreeNode)
+
+	tmp = node
+
+	if tmp == nil {
+		return
+	}
+	q.EnQueue(tmp)
+
+	for (q.Size() > 0) {
+		tmp = q.DeQueueWithValue().(*BiTreeNode)
+		l.Ins_next(l.tail, tmp.data) //插入
+		if tmp.left != nil {
+			q.EnQueue(tmp.left)
+		}
+		if tmp.right != nil {
+			q.EnQueue(tmp.right)
+		}
 	}
 }
 

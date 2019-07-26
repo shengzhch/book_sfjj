@@ -9,6 +9,18 @@ func (s *Queue) EnQueue(data interface{}) {
 }
 
 //对头删除
-func (s *Queue) DeQueue(data interface{}) {
+func (s *Queue) DeQueue() {
 	List(*s).Rem_next(nil)
+}
+
+//对头删除
+func (s *Queue) DeQueueWithValue() interface{} {
+	rel := List(*s).head
+	List(*s).Rem_next(nil)
+	return rel
+}
+
+//对头删除
+func (s *Queue) Size() int {
+	return List(*s).size
 }
