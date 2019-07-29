@@ -13,22 +13,26 @@ func merge(data []interface{}, i, j, k int, cf CF) int {
 	mpos := 0
 
 	for (ipos <= j || jpos <= k) {
+		//处理两组数据剩余的部分,肯定只有一组剩余
 		if (ipos > j) {
 			for (jpos <= k) {
 				m[mpos] = data[jpos]
 				jpos++
 				mpos++
 			}
+
 			continue
+
 		} else if (jpos > k) {
 			for (ipos <= j) {
-				m[ipos] = data[ipos]
+				m[mpos] = data[ipos]
 				ipos++
 				mpos++
 			}
 			continue
 		}
 
+		//分别从两组的数据头开始，按顺序放入到m中
 		if (cf(data[ipos], data[jpos]) < 0) {
 			m[mpos] = data[ipos]
 			ipos++
@@ -40,11 +44,11 @@ func merge(data []interface{}, i, j, k int, cf CF) int {
 		}
 	}
 
-	copy(data[i:k-i+1], m[:])
+	copy(data[i:k+1], m[:])
 	return 0
 }
 
-//
+//i为0 k为size-1
 func Mgsort(data []interface{}, i, k int, cf CF) int {
 	var j int
 	if (i < k) {
