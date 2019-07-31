@@ -63,7 +63,29 @@ func TestCtsort(t *testing.T) {
 	}
 	l := len(a)
 
-	Ctsort(a, l, -8,45)
+	Ctsort(a, l, -8, 45)
 
 	t.Log("rel ", a)
+}
+
+func TestRxsort(t *testing.T) {
+	a := []int{
+		302, 253, 11, 901, 529, 102,
+	}
+	l := len(a)
+
+	Rxsort(a, l, 3, 10)
+
+	t.Log("rel ", a)
+}
+
+func TestBisearch(t *testing.T) {
+	a := []interface{}{
+		0, 1, 2, 3, 4, 4, 5, 5, 6, 7, 8, 8, 11, 45,
+	}
+	l := len(a)
+	
+	rel := Bisearch(a, 5, l, cf)
+
+	t.Log("rel ", rel)
 }
