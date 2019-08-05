@@ -5,22 +5,27 @@ type Queue List
 
 //对尾插入
 func (s *Queue) EnQueue(data interface{}) {
-	List(*s).Ins_next(s.tail, data)
+	(*List)(s).Ins_next(s.tail, data)
 }
 
 //对头删除
 func (s *Queue) DeQueue() {
-	List(*s).Rem_next(nil)
+	(*List)(s).Rem_next(nil)
 }
 
 //对头删除
 func (s *Queue) DeQueueWithValue() interface{} {
 	rel := List(*s).head
-	List(*s).Rem_next(nil)
+	(*List)(s).Rem_next(nil)
 	return rel
 }
 
 //对头删除
 func (s *Queue) Size() int {
-	return List(*s).size
+	return (*List)(s).size
+}
+
+//对头
+func (s *Queue) Head() interface{} {
+	return (*List)(s).head
 }

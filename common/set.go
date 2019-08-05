@@ -5,7 +5,7 @@ type Set List
 
 func (s *Set) Insert(data interface{}) {
 	if !s.Belong(data) {
-		List(*s).Ins_next(s.tail, data)
+		(*List)(s).Ins_next(s.tail, data)
 	}
 }
 
@@ -24,7 +24,7 @@ func (s *Set) Remove(data interface{}) {
 		return
 	}
 
-	List(*s).Rem_next(prev)
+	(*List)(s).Rem_next(prev)
 
 	return
 }
@@ -34,13 +34,13 @@ func (s *Set) Union(s2 *Set) *Set {
 	var rel = new(Set)
 
 	for m := s.head; m != nil; m = m.next {
-		List(*rel).Ins_next(rel.tail, m.value)
+		(*List)(s).Ins_next(rel.tail, m.value)
 	}
 	for m := s2.head; m != nil; m = m.next {
 		if rel.Belong(m.value) {
 			continue
 		} else {
-			List(*rel).Ins_next(rel.tail, m.value)
+			(*List)(s).Ins_next(rel.tail, m.value)
 		}
 	}
 	return rel
@@ -51,7 +51,7 @@ func (s *Set) Intersection(s2 *Set) *Set {
 
 	for m := s.head; m != nil; m = m.next {
 		if s2.Belong(m.value) {
-			List(*rel).Ins_next(rel.tail, m.value)
+			(*List)(s).Ins_next(rel.tail, m.value)
 		}
 	}
 	return rel
@@ -63,7 +63,7 @@ func (s *Set) Difference(s2 *Set) *Set {
 
 	for m := s.head; m != nil; m = m.next {
 		if !s2.Belong(m.value) {
-			List(*rel).Ins_next(rel.tail, m.value)
+			(*List)(s).Ins_next(rel.tail, m.value)
 		}
 	}
 	return rel
@@ -104,5 +104,5 @@ func (s *Set) Equal(s2 *Set) bool {
 }
 
 func (s *Set) Size() int {
-	return List(*s).size
+	return (*List)(s).size
 }

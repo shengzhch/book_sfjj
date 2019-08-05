@@ -5,20 +5,20 @@ package common
 type Stack List
 
 func (s *Stack) Init() {
-	List(*s).Init()
+	(*List)(s).Init()
 }
 
 func (s *Stack) Push(data interface{}) {
-	List(*s).Ins_next(nil, data)
+	(*List)(s).Ins_next(nil, data)
 }
 
 func (s *Stack) Pop() {
-	List(*s).Rem_next(nil)
+	(*List)(s).Rem_next(nil)
 }
 
 func (s *Stack) PopValue() interface{} {
 	rel := s.head.value
-	List(*s).Rem_next(nil)
+	(*List)(s).Rem_next(nil)
 	return rel
 }
 

@@ -1,10 +1,15 @@
 package common
 
+
 //单链表
 
 type ListElm struct {
 	value interface{}
 	next  *ListElm
+}
+
+func (e *ListElm) GetValue() interface{} {
+	return e.value
 }
 
 type List struct {
@@ -13,12 +18,12 @@ type List struct {
 	tail *ListElm
 }
 
-func (l List) Init() {
+func (l *List) Init() {
 	l.size = 0
 }
 
 //在ele后插入一个新的元素
-func (l List) Ins_next(ele *ListElm, value interface{}) {
+func (l *List) Ins_next(ele *ListElm, value interface{}) {
 	new_element := &ListElm{
 		value: value,
 	}
@@ -45,7 +50,7 @@ func (l List) Ins_next(ele *ListElm, value interface{}) {
 }
 
 //在ele元素后删除一个元素
-func (l List) Rem_next(ele *ListElm) {
+func (l *List) Rem_next(ele *ListElm) {
 	if l.size == 0 {
 		return
 	}
@@ -73,7 +78,7 @@ func (l List) Rem_next(ele *ListElm) {
 }
 
 //删除ele之前的元素
-func (l List) Rem_before(ele *ListElm) {
+func (l *List) Rem_before(ele *ListElm) {
 	if l.size == 0 {
 		return
 	}
@@ -89,7 +94,7 @@ func (l List) Rem_before(ele *ListElm) {
 }
 
 //遍历执行 f
-func (l List) Traverse(f func(e *ListElm, args ...interface{}) bool, args ...interface{}) {
+func (l *List) Traverse(f func(e *ListElm, args ...interface{}) bool, args ...interface{}) {
 
 	if l.size == 0 {
 		return
