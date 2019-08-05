@@ -17,15 +17,15 @@ func (s *Queue) DeQueue() {
 func (s *Queue) DeQueueWithValue() interface{} {
 	rel := List(*s).head
 	(*List)(s).Rem_next(nil)
-	return rel
+	return rel.value
 }
 
 //对头删除
 func (s *Queue) Size() int {
-	return (*List)(s).size
+	return s.size
 }
 
 //对头
 func (s *Queue) Head() interface{} {
-	return (*List)(s).head
+	return s.head.value
 }

@@ -32,7 +32,6 @@ func (s *TwostackQueue) Dequeue() interface{} {
 }
 
 func (s *TwostackQueue) GetHead() interface{} {
-
 	//转栈操作
 	if s.spop.Size() == 0 {
 		for s.spush.Size() > 0 {
