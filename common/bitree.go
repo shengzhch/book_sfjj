@@ -10,6 +10,12 @@ type BiTreeNode struct {
 	right *BiTreeNode
 }
 
+func NewBiTreeNode(data interface{}) *BiTreeNode {
+	return &BiTreeNode{
+		data: data,
+	}
+}
+
 type BiTree struct {
 	size    int
 	compare func(key1, key2 interface{}) int
@@ -307,4 +313,19 @@ func (node *BiTreeNode) Left() *BiTreeNode {
 //
 func (node *BiTreeNode) Data() interface{} {
 	return node.data
+}
+
+//
+func (node *BiTreeNode) SetRight(n *BiTreeNode) {
+	node.right = n
+}
+
+//
+func (node *BiTreeNode) SetLeft(n *BiTreeNode) {
+	node.left = n
+}
+
+//
+func (node *BiTreeNode) SetData(data interface{}) {
+	node.data = data
 }

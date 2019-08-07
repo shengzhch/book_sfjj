@@ -29,3 +29,7 @@ func (s *Stack) Top() interface{} {
 func (s *Stack) Size() int {
 	return s.size
 }
+
+func (s *Stack) IsEmpty() bool {
+	return s.size == 0
+}

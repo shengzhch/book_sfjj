@@ -1,7 +1,9 @@
 package common
 
-
 //单链表
+import (
+	"fmt"
+)
 
 type ListElm struct {
 	value interface{}
@@ -107,3 +109,13 @@ func (l *List) Traverse(f func(e *ListElm, args ...interface{}) bool, args ...in
 	}
 	return
 }
+
+var (
+	Tf = func(e *ListElm, args ...interface{}) bool {
+		if e == nil {
+			return true
+		}
+		fmt.Println(e.GetValue())
+		return false
+	}
+)
