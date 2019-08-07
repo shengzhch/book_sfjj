@@ -37,7 +37,6 @@ func Hashpjw(key string, tableSize int) int {
 }
 
 //define a structure for chained hash tables
-
 type Chtable struct {
 	buckets int
 	size    int

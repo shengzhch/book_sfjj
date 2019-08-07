@@ -82,8 +82,6 @@ func (l *DList) Ins_next_strict(ele *DListElm, value interface{}) {
 	return
 }
 
-
-
 //删除ele 元素
 func (l *DList) Rem_ele(ele *DListElm) {
 	if ele == nil || l.size == 0 {
@@ -110,5 +108,29 @@ func (l *DList) Rem_ele(ele *DListElm) {
 	}
 
 	l.size--
+}
 
+//
+func (l *DList) Size() int {
+	return l.size
+}
+
+//
+func (l *DList) GetHead() *DListElm {
+	return l.head
+}
+
+//
+func (l *DList) GetHeadValue() interface{} {
+	return l.head.value
+}
+
+//
+func (l *DList) GetTail()*DListElm{
+	return l.tail
+}
+
+//
+func (l *DList) GetTailValue() interface{} {
+	return l.tail.value
 }
