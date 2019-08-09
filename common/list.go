@@ -14,6 +14,18 @@ func (e *ListElm) GetValue() interface{} {
 	return e.value
 }
 
+func (e *ListElm) Next() *ListElm {
+	return e.next
+}
+
+func (e *ListElm) SetValue(value interface{}) {
+	e.value = value
+}
+
+func (e *ListElm) SetNext(next *ListElm) {
+	e.next = next
+}
+
 type List struct {
 	size int
 	head *ListElm
@@ -22,6 +34,26 @@ type List struct {
 
 func (l *List) Init() {
 	l.size = 0
+}
+
+func (l *List) Head() *ListElm {
+	return l.head
+}
+
+func (l *List) Tail() *ListElm {
+	return l.tail
+}
+
+func (l *List) SetHead(head *ListElm) {
+	l.head = head
+}
+
+func (l *List) SetTail(tail *ListElm) {
+	l.tail = tail
+}
+
+func (l *List) Size() int {
+	return l.size
 }
 
 //在ele后插入一个新的元素
@@ -104,6 +136,9 @@ func (l *List) Traverse(f func(e *ListElm, args ...interface{}) bool, args ...in
 
 	for m := l.head; m != nil; m = m.next {
 		if f(m, args) {
+			return
+		}
+		if m == l.tail {
 			return
 		}
 	}

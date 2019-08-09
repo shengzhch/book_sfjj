@@ -1,11 +1,39 @@
 package common
 
+import (
+	"fmt"
+)
+
 //双向链表
 
 type DListElm struct {
 	value interface{}
 	pre   *DListElm
 	next  *DListElm
+}
+
+func (e *DListElm) GetValue() interface{} {
+	return e.value
+}
+
+func (e *DListElm) Next() *DListElm {
+	return e.next
+}
+
+func (e *DListElm) Pre() *DListElm {
+	return e.pre
+}
+
+func (e *DListElm) SetValue(value interface{}) {
+	e.value = value
+}
+
+func (e *DListElm) SetNext(next *DListElm) {
+	e.next = next
+}
+
+func (e *DListElm) SetPre(pre *DListElm) {
+	e.pre = pre
 }
 
 type DList struct {
@@ -110,6 +138,36 @@ func (l *DList) Rem_ele(ele *DListElm) {
 	l.size--
 }
 
+//遍历执行 f
+func (l *DList) Traverse(f func(e *DListElm, args ...interface{}) bool, args ...interface{}) {
+
+	if l.size == 0 {
+		return
+	}
+
+	for m := l.head; m != nil; m = m.next {
+		if f(m, args) {
+			return
+		}
+	}
+	return
+}
+
+//倒叙遍历执行 f
+func (l *DList) ReTraverse(f func(e *DListElm, args ...interface{}) bool, args ...interface{}) {
+
+	if l.size == 0 {
+		return
+	}
+
+	for m := l.tail; m != nil; m = m.pre {
+		if f(m, args) {
+			return
+		}
+	}
+	return
+}
+
 //
 func (l *DList) Size() int {
 	return l.size
@@ -121,16 +179,36 @@ func (l *DList) GetHead() *DListElm {
 }
 
 //
+func (l *DList) SetHead(head *DListElm) {
+	l.head = head
+}
+
+//
 func (l *DList) GetHeadValue() interface{} {
 	return l.head.value
 }
 
 //
-func (l *DList) GetTail()*DListElm{
+func (l *DList) GetTail() *DListElm {
 	return l.tail
+}
+
+//
+func (l *DList) SetTail(tail *DListElm) {
+	l.tail = tail
 }
 
 //
 func (l *DList) GetTailValue() interface{} {
 	return l.tail.value
 }
+
+var (
+	Tdf = func(e *DListElm, args ...interface{}) bool {
+		if e == nil {
+			return true
+		}
+		fmt.Println(e.GetValue())
+		return false
+	}
+)
