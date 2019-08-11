@@ -46,6 +46,17 @@ func TestQksort2(t *testing.T) {
 	t.Log("rel ", a)
 }
 
+func TestShellSort(t *testing.T) {
+	a := []interface{}{
+		1, 5, 7, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 36, 25,
+	}
+	l := len(a)
+
+	ShellSort(a, l, cf)
+
+	t.Log("rel ", a)
+}
+
 func TestMgsort(t *testing.T) {
 	a := []interface{}{
 		1, 5, 7, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 36, 25,
@@ -84,7 +95,7 @@ func TestBisearch(t *testing.T) {
 		0, 1, 2, 3, 4, 4, 5, 5, 6, 7, 8, 8, 11, 45,
 	}
 	l := len(a)
-	
+
 	rel := Bisearch(a, 5, l, cf)
 
 	t.Log("rel ", rel)
