@@ -83,6 +83,11 @@ func (l *List) Ins_next(ele *ListElm, value interface{}) {
 	l.size++
 	return
 }
+//为什么经常采用删除某个节点后续节点的操作，而不是直接删除某个节点
+
+//删除节点时需要确定前一个节点的信息，直接删除某个节点也是利用了前一个节点的信息，直接删除获取有重复操作
+//所以一般采用删除节点后续节点的方法删除某个节点
+
 
 //在ele元素后删除一个元素 ，若ele为nil，表示移除头节点
 func (l *List) Rem_next(ele *ListElm) {

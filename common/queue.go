@@ -1,6 +1,6 @@
 package common
 
-//队列 先进先出 对尾插入 对头删除 也用单链表表示队列
+//队列 先进先出 对尾插入 对头删除 也用单链表表示队列，头节点进行出队操作，尾节点进行入队操作
 type Queue List
 
 //对尾插入
@@ -20,7 +20,7 @@ func (s *Queue) DeQueueWithValue() interface{} {
 	return rel.value
 }
 
-//对头删除
+//
 func (s *Queue) Size() int {
 	return s.size
 }

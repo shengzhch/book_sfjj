@@ -1,7 +1,6 @@
 package common
 
-//栈先先出。栈顶进出
-//用队列表示栈， 队列头表示栈顶
+//栈 后进先出。栈顶进行插入删除。 用链表表示，表头表示栈顶
 type Stack List
 
 func (s *Stack) Init() {
