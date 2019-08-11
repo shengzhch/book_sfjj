@@ -4,8 +4,7 @@ import (
 	"fmt"
 )
 
-//双向链表
-
+//双向链表 每个节点包含指向前后方节点的指针
 type DListElm struct {
 	value interface{}
 	pre   *DListElm
@@ -69,24 +68,28 @@ func (l *DList) Ins_next(ele *DListElm, value interface{}) {
 		new_element.pre = ele
 		new_element.next = ele.next
 
-		//在链表尾部插入
+		//在链表尾部插入，更新尾节点
 		if ele.next == nil {
 			l.tail = new_element
 		} else {
+			//原ele的后续节点指向新节点
 			ele.next.pre = new_element
 		}
+
+		//
 		ele.next = new_element
 	}
 	l.size ++
 	return
 }
 
-//在ele后插入一个新的元素
+//严格模式 在ele后插入一个新的元素
 func (l *DList) Ins_next_strict(ele *DListElm, value interface{}) {
 	new_element := &DListElm{
 		value: value,
 	}
 
+	//在l有元素的情况下必须制定要在哪一个节点之后进行插入，nil直接返回
 	if ele == nil && l.size > 0 {
 		return
 	}
@@ -122,15 +125,18 @@ func (l *DList) Rem_ele(ele *DListElm) {
 		if l.head == nil {
 			l.tail = nil
 		} else {
-			ele.next.pre = nil
+			//头节点前置指针置为空
+			l.head.pre = nil
 		}
 	} else {
-
+		//ele的前一个节点的后置指针指向ele的后一个节点
 		ele.pre.next = ele.next
 
+		//后续节点为空，删除的是尾节点。需要跟新尾节点
 		if ele.next == nil {
 			l.tail = ele.pre
 		} else {
+			//ele的后一个节点的前置指针指向ele的前一个节点
 			ele.next.pre = ele.pre
 		}
 	}
@@ -184,11 +190,6 @@ func (l *DList) SetHead(head *DListElm) {
 }
 
 //
-func (l *DList) GetHeadValue() interface{} {
-	return l.head.value
-}
-
-//
 func (l *DList) GetTail() *DListElm {
 	return l.tail
 }
@@ -198,10 +199,6 @@ func (l *DList) SetTail(tail *DListElm) {
 	l.tail = tail
 }
 
-//
-func (l *DList) GetTailValue() interface{} {
-	return l.tail.value
-}
 
 var (
 	Tdf = func(e *DListElm, args ...interface{}) bool {

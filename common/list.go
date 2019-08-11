@@ -26,6 +26,7 @@ func (e *ListElm) SetNext(next *ListElm) {
 	e.next = next
 }
 
+//包含头尾节点，操作时要维护信息
 type List struct {
 	size int
 	head *ListElm
@@ -56,7 +57,7 @@ func (l *List) Size() int {
 	return l.size
 }
 
-//在ele后插入一个新的元素
+//在ele后插入一个新的元素,ele 为nil时表示在插入的节点作为头节点
 func (l *List) Ins_next(ele *ListElm, value interface{}) {
 	new_element := &ListElm{
 		value: value,
@@ -79,11 +80,11 @@ func (l *List) Ins_next(ele *ListElm, value interface{}) {
 		new_element.next = ele.next
 		ele.next = new_element
 	}
-	l.size ++
+	l.size++
 	return
 }
 
-//在ele元素后删除一个元素
+//在ele元素后删除一个元素 ，若ele为nil，表示移除头节点
 func (l *List) Rem_next(ele *ListElm) {
 	if l.size == 0 {
 		return
@@ -102,18 +103,18 @@ func (l *List) Rem_next(ele *ListElm) {
 		}
 		ele.next = ele.next.next
 
-		//移除最后一个节点
+		//移除的是最后一个节点时需要重置尾节点
 		if ele.next == nil {
 			l.tail = ele
 		}
 	}
-	l.size --
+	l.size--
 	return
 }
 
-//删除ele之前的元素
-func (l *List) Rem_before(ele *ListElm) {
-	if l.size == 0 {
+//删除ele元素。
+func (l *List) Rem_ele(ele *ListElm) {
+	if l.size == 0 || ele == nil {
 		return
 	}
 	var pre *ListElm
@@ -124,6 +125,39 @@ func (l *List) Rem_before(ele *ListElm) {
 		}
 		pre = m
 	}
+	return
+}
+
+//删除ele的元素。
+func (l *List) Rem_ele2(ele *ListElm) {
+	if l.size == 0 || ele == nil {
+		return
+	}
+
+	if l.size == 1 {
+		l.head = nil
+		l.tail = nil
+		l.size--
+		return
+	}
+
+	var pre *ListElm
+	//需要记录前一个节点的信息
+	for m := l.head; m != nil; m = m.next {
+		if m == ele {
+			if m == l.head {
+				l.head = l.head.next
+			} else if m == l.tail {
+				l.tail = pre
+			} else {
+				pre.next = m.next
+			}
+			l.size--
+			return
+		}
+		pre = m
+	}
+
 	return
 }
 
@@ -145,6 +179,7 @@ func (l *List) Traverse(f func(e *ListElm, args ...interface{}) bool, args ...in
 	return
 }
 
+//定义一个打印的函数
 var (
 	Tf = func(e *ListElm, args ...interface{}) bool {
 		if e == nil {
