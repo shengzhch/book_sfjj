@@ -174,7 +174,8 @@ func (l *List) Traverse(f func(e *ListElm, args ...interface{}) bool, args ...in
 	}
 
 	for m := l.head; m != nil; m = m.next {
-		if f(m, args) {
+		//千万注意args要散列传入f,否则会把所有参数当以一个参数数组传入
+		if f(m, args...) {
 			return
 		}
 		if m == l.tail {
