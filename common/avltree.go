@@ -1,20 +1,12 @@
 package common
 
 /*
-二叉搜索树 ： 从根结点向下查询，若是结点值比目标值小，顺着左子树继续查找，反之顺着右子树继续查找。
-
-插入：也是按照规则，从根结点开始，一直查询到空位置进行插入
-
-复杂度 o(lg n) : n代表树中结点的个数 （平衡二叉树的情况）
-
-
 
 AVL 树 ：特殊类型的二叉树，每个结点保存一份额外的信息：结点的平衡因子.结点左子树的高度减去右子树的高度。
 插入结点时avl树通过自我调整，使平衡因子始终保持在 +1，-1，0。该过程称为旋转
 
+
 设 x 为刚插入AVL树的结点，设A为离x最近的且平衡因子更改为+-2的结点，
-
-
 当 x 位于A的左子树的左子树上时，进行 LL 旋转
    left为A的左子树（+1），
 
@@ -59,7 +51,7 @@ const (
 	AVL_RIGHT_HEAVY = -1
 )
 
-type BisTree BiTree
+type AvlTree BiTree
 
 type AvlNode struct {
 	data interface{}
@@ -148,7 +140,7 @@ func Rorate_right(node **BiTreeNode) {
 }
 
 //销毁某个结点下方的左子树
-func Destory_left(bs *BisTree, node *BiTreeNode) {
+func Destory_left(bs *AvlTree, node *BiTreeNode) {
 	var pos *BiTreeNode
 
 	if bs.size == 0 {
@@ -169,7 +161,7 @@ func Destory_left(bs *BisTree, node *BiTreeNode) {
 }
 
 //销毁某个结点下方的右子树
-func Destory_right(bs *BisTree, node *BiTreeNode) {
+func Destory_right(bs *AvlTree, node *BiTreeNode) {
 	var pos **BiTreeNode
 
 	if bs.size == 0 {
@@ -274,7 +266,7 @@ func Insert(tree *BiTree, node **BiTreeNode, data interface{}, balanced *bool) {
 }
 
 //从node开始查找 删除结点为data的结点
-func Hide(tree *BisTree, node *BiTreeNode, data interface{}) {
+func Hide(tree *AvlTree, node *BiTreeNode, data interface{}) {
 	var cmpval int
 	if node.Is_eob() {
 		return
@@ -293,7 +285,7 @@ func Hide(tree *BisTree, node *BiTreeNode, data interface{}) {
 	return
 }
 
-func Lookup(tree *BisTree, node *BiTreeNode, data interface{}) int {
+func Lookup(tree *AvlTree, node *BiTreeNode, data interface{}) int {
 	var cmpval, retval int
 	if node.Is_eob() {
 		return -1
