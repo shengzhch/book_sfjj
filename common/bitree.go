@@ -147,6 +147,10 @@ func (bs *BiTree) Root() *BiTreeNode {
 	return bs.root
 }
 
+func (bs *BiTree) SetRoot(root *BiTreeNode) {
+	bs.root = root
+}
+
 func (node *BiTreeNode) Preorder(l *List) {
 
 	if !node.Is_eob() {
@@ -261,7 +265,7 @@ func (node *BiTreeNode) PostorderNo(l *List) {
 	}
 
 	for (s2.Size() > 0) {
-		tmp = s1.PopValue().(*BiTreeNode)
+		tmp = s2.PopValue().(*BiTreeNode)
 		l.Ins_next(l.tail, tmp.data) //插入
 	}
 }
