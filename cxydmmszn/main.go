@@ -12,6 +12,8 @@ func main() {
 	bitree.SetRoot(root)
 	bitree.Ins_left(root, 2)
 	bitree.Ins_right(root, 3)
+	//bitree.Ins_left(root.Left(), 4)
+	//bitree.Ins_right(root.Left(), 5)
 
 
 
