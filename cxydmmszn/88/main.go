@@ -1,10 +1,10 @@
 package main
 
 import (
-"fmt"
-"github.com/shengzhch/book_sfjj/common"
+	_ "fmt"
+	_ "github.com/shengzhch/book_sfjj/common"
 )
 
-func main(){
-
+func main() {
+	println("见二叉树部分")
 }
