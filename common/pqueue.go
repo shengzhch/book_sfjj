@@ -7,20 +7,20 @@ package common
 type Pqueue Heap
 
 func (s *Pqueue) Init(args ...interface{}) {
-	(Heap)(*s).Init(args)
+	(*Heap)(s).Init(args)
 }
 
 func (s *Pqueue) Insert(data interface{}) {
-	(Heap)(*s).Insert(data)
+	(*Heap)(s).Insert(data)
 }
 func (s *Pqueue) Extract(args ...interface{}) {
-	(Heap)(*s).Extract()
+	(*Heap)(s).Extract()
 }
 func (s *Pqueue) Size() int {
-	return (Heap)(*s).size
+	return (*Heap)(s).size
 }
 
 //优先级最高的元素
 func (s *Pqueue) Peek() interface{} {
-	return (Heap)(*s).tree[0]
+	return (*Heap)(s).tree[0]
 }
