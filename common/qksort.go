@@ -2,7 +2,6 @@ package common
 
 import (
 	rand2 "math/rand"
-	"fmt"
 )
 
 /*
@@ -30,7 +29,6 @@ func rand() int {
 
 //i,k 初试值设置为 0 size-1 分区 原书给的算法有误，有可能陷入死循环,已调整
 func Partition(data []interface{}, i, k int, cf CF) int {
-	fmt.Println("DONE")
 	if i == k {
 		return i
 	}
